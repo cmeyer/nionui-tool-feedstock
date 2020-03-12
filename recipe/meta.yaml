@@ -1,15 +1,47 @@
 {% set name = "nionui-tool" %}
-{% set version = "0.3.25" %}
+{% set version = "0.4.0" %}
+
+{% set pyver = "cp36.cp37.cp38" %}
+{% set pyabi = "abi3" %}  # [osx or linux]
+{% set pyabi = "none" %}  # [win]
+{% set platform = "macosx_10_11_intel" %}  # [osx]
+{% set platform = "manylinux1_x86_64" %}  # [linux]
+{% set platform = "win_amd64" %}  # [win]
+{% set fn = "nionui_tool-{}-{}-{}-{}.whl".format(version, pyver, pyabi, platform) %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
+
+source:
+  - url: https://github.com/nion-software/{{ name }}/releases/download/{{ version }}/{{ fn }}  # [linux or osx]
+    sha256: 4d55734e882dc3a2b990a77e7a1e59f6693798c4a64163a333e1ee55df32e131  # [linux]
+    sha256: c392f6921b48ece3c0da80aaad0ec797771d16d1935b2854976cd987b50ecc2d  # [osx]
+    folder: wheels
+  - url: "https://github.com/nion-software/{{ name }}/archive/{{ version }}.tar.gz"  # [win]
+
+environment:
+  QT_BASE_X64: C:\Qt\5.14\msvc2017_64
+  PYTHON3_BASE_X64: C:\Miniconda36-x64
 
 build:
   number: 0
   skip: True  # [py2k]
   entry_points:
     - nionui-tool = nion.nionui_tool.command:main
+  binary_relocation: False
+  ignore_prefix_files: True
+  detect_binary_files_with_prefix: False
+  missing_dso_whitelist: "**/*"
+  script: "{{ PYTHON }} -m pip install --no-deps  --ignore-installed wheels/{{ fn }} -vv"  # [linux or osx]
+  project: launcher\NionUILauncher.vcxproj  # [win]
+  verbosity: minimal  # [win]
+
+after_build:
+  - ps: Get-ChildItem -Include *.pdb -Recurse | foreach { $_.Delete() }  # [win]
+  - ps: Get-ChildItem launcher\x64\Release\imageformats -Include *d.dll -Recurse | foreach { $_.Delete() }  # [win]
+  - cmd: "%PYTHON3_BASE_X64%\\python.exe setup.py bdist_wheel"  # [win]
+  - cmd: "%PYTHON3_BASE_X64%\\python.exe -m pip install dist\*.whl -vv"  # [win]
 
 requirements:
   host:
@@ -17,15 +49,18 @@ requirements:
     - pip
     - setuptools
   run:
-    - python >=3.6
+    - python
+
+test:
+  commands:
+    - test -f $PREFIX/bin/nionui-tool  # [osx]
 
 about:
-  home: http://github.com/nion-software/nionui-tool
+  home: http://github.com/nion-software/{{ name }}
   license: Apache-2.0
   license_family: Apache
-  license_file: LICENSE
   summary: "A native launcher for Nion UI apps."
-  dev_url: https://github.com/nion-software/nionui-tool
+  dev_url: https://github.com/nion-software/{{ name }}
 
 extra:
   recipe-maintainers:
