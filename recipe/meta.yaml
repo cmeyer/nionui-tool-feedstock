@@ -23,10 +23,6 @@ source:
     folder: license  # [linux or osx]
   url: https://github.com/nion-software/{{ name }}/archive/{{ version }}.tar.gz  # [win]
 
-environment:
-  QT_BASE_X64: C:\Qt\5.14\msvc2017_64
-  PYTHON3_BASE_X64: C:\Miniconda36-x64
-
 build:
   number: 0
   skip: True  # [py2k]
@@ -37,13 +33,6 @@ build:
   detect_binary_files_with_prefix: False
   missing_dso_whitelist: "**/*"
   script: "{{ PYTHON }} -m pip install --no-deps  --ignore-installed wheels/{{ fn }} -vv"  # [linux or osx]
-  project: nionui-tool-0.4.0\launcher\NionUILauncher.vcxproj  # [win]
-
-after_build:  # [win]
-  - ps: Get-ChildItem -Include *.pdb -Recurse | foreach { $_.Delete() }  # [win]
-  - ps: Get-ChildItem launcher\x64\Release\imageformats -Include *d.dll -Recurse | foreach { $_.Delete() }  # [win]
-  - cmd: "C:\\Miniconda36-x64\\python.exe setup.py bdist_wheel"  # [win]
-  - cmd: "C:\\Miniconda36-x64\\python.exe -m pip install --no-deps  --ignore-installed dist\\{{ fn }} -vv"  # [win]
 
 requirements:
   host:
