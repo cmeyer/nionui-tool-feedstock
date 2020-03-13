@@ -42,15 +42,15 @@ build:
 after_build:  # [win]
   - ps: Get-ChildItem -Include *.pdb -Recurse | foreach { $_.Delete() }  # [win]
   - ps: Get-ChildItem launcher\x64\Release\imageformats -Include *d.dll -Recurse | foreach { $_.Delete() }  # [win]
-  - cmd: "C:\Miniconda36-x64\python.exe setup.py bdist_wheel"  # [win]
-  - cmd: "C:\Miniconda36-x64\python.exe -m pip install --no-deps  --ignore-installed dist\{{ fn }} -vv"  # [win]
+  - cmd: "C:\\Miniconda36-x64\\python.exe setup.py bdist_wheel"  # [win]
+  - cmd: "C:\\Miniconda36-x64\\python.exe -m pip install --no-deps  --ignore-installed dist\\{{ fn }} -vv"  # [win]
 
 requirements:
   host:
     - python {{ python }}
     - pip
     - setuptools
-    - numpy  # [win]
+    - numpy 1.14.*  # [win]
   run:
     - python
     - {{ pin_compatible('numpy') }}  # [win]
