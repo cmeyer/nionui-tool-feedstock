@@ -50,7 +50,7 @@ requirements:
     - python {{ python }}
     - pip
     - setuptools
-    - numpy=1.14
+    - numpy 1.14.*  # [win]
   run:
     - python
 
