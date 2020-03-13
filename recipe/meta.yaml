@@ -22,7 +22,7 @@ source:
   - url: https://github.com/nion-software/{{ name }}/raw/{{ version }}/LICENSE  # [linux or osx]
     sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
     folder: license
-  - url: "https://github.com/nion-software/{{ name }}/archive/{{ version }}.tar.gz"  # [win]
+  - url: https://github.com/nion-software/{{ name }}/archive/{{ version }}.tar.gz  # [win]
 
 build:
   number: 0
@@ -34,6 +34,7 @@ build:
   detect_binary_files_with_prefix: False
   missing_dso_whitelist: "**/*"
   script: "{{ PYTHON }} -m pip install --no-deps  --ignore-installed wheels/{{ fn }} -vv"  # [linux or osx]
+  project: nionui-tool-0.4.0\launcher\NionUILauncher.vcxproj  # [win]
 
 requirements:
   host:
