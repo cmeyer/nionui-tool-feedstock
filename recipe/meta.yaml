@@ -17,12 +17,11 @@ source:
   - url: https://github.com/nion-software/{{ name }}/releases/download/{{ version }}/{{ fn }}  # [linux or osx]
     sha256: 4d55734e882dc3a2b990a77e7a1e59f6693798c4a64163a333e1ee55df32e131  # [linux]
     sha256: c392f6921b48ece3c0da80aaad0ec797771d16d1935b2854976cd987b50ecc2d  # [osx]
-    sha256: a94b96e6655cdb21402ba21c98f18b5cf62b5d041242d85473990c17e6ce24fd  # [win]
-    folder: wheels
+    folder: wheels  # [linux or osx]
   - url: https://github.com/nion-software/{{ name }}/raw/{{ version }}/LICENSE  # [linux or osx]
-    sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
-    folder: license
-  - url: https://github.com/nion-software/{{ name }}/archive/{{ version }}.tar.gz  # [win]
+    sha256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4  # [linux or osx]
+    folder: license  # [linux or osx]
+  url: https://github.com/nion-software/{{ name }}/archive/{{ version }}.tar.gz  # [win]
 
 build:
   number: 0
