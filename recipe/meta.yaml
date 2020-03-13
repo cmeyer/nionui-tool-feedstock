@@ -50,9 +50,10 @@ requirements:
     - python {{ python }}
     - pip
     - setuptools
-    - numpy 1.14.*  # [win]
+    - numpy  # [win]
   run:
     - python
+    - {{ pin_compatible('numpy') }}  # [win]
 
 test:
   commands:
