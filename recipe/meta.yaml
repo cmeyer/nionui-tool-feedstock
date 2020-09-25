@@ -5,28 +5,69 @@ package:
   name: {{ name|lower }}
   version: {{ version }}
 
+source:
+  url: https://github.com/nion-software/{{ name }}/archive/{{ version }}.tar.gz
+  sha256: 50728b244ba5cb0caa3fc6c08bb9735dac0bc03b9e6a6bb482fde997f06642e0
+  patches:
+    - patches/0001-A.patch
+
 build:
-  number: 5
-  skip: True  # [py2k]
+  number: 6
+  skip: true  # [py2k or python_impl == 'pypy']
   entry_points:
     - nionui-tool = nion.nionui_tool.command:main
+  binary_relocation: false
+  ignore_prefix_files: true
+  detect_binary_files_with_prefix: false
+  missing_dso_whitelist: '**/*'
+  ignore_run_exports:
+    - qt
 
 requirements:
   host:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    - {{ cdt('mesa-dri-drivers') }}  # [linux]
+    - {{ cdt('libselinux') }}  # [linux]
+    - {{ cdt('libxdamage') }}  # [linux]
+    - {{ cdt('libxxf86vm') }}  # [linux]
+    - {{ cdt('libxext') }}     # [linux]
+    - {{ cdt('libxau') }}     # [linux]
+    - cmake
+    - make  # [not win]
     - python
+    - numpy 1.14.*
+    - qt  # [linux]
+    - packaging
     - pip
     - setuptools
-    - numpy 1.14.*
+    - wheel
+    - libxfixes-devel-cos6-x86_64  # [linux]
   run:
     - python
 
+test:
+  commands:
+    - test -f "$PREFIX/bin/nionui-tool"  # [osx]
+    - test -f "$PREFIX/bin/Nion UI Launcher.app/Contents/MacOS/Nion UI Launcher"  # [osx]
+    - test -f "$PREFIX/bin/Nion UI Launcher.app/Contents/Resources/bootstrap.py"  # [osx]
+    - test -f "$PREFIX/bin/nionui-tool"  # [linux]
+    - test -f "$PREFIX/bin/NionUILauncher/NionUILauncher"  # [linux]
+    - test -f "$PREFIX/bin/NionUILauncher/bootstrap.py"  # [linux]
+    - if not exist "%PREFIX%\\Scripts\\nionui-tool.exe" exit 1  # [win]
+    - if not exist "%PREFIX%\\Scripts\\NionUILauncher\\NionUILauncher.exe" exit 1  # [win]
+    - if not exist "%PREFIX%\\Scripts\\NionUILauncher\\bootstrap.py" exit 1  # [win]
+
 about:
-  home: http://github.com/nion-software/nionui-tool
+  home: http://github.com/nion-software/{{ name }}
   license: Apache-2.0
   license_family: Apache
-  license_file: LICENSE
-  summary: "A native launcher for Nion UI apps."
-  dev_url: https://github.com/nion-software/nionui-tool
+  license_file:
+    - LICENSE
+    - NOTICES
+  summary: A native launcher for Nion UI apps.
+  dev_url: https://github.com/nion-software/{{ name }}
 
 extra:
   recipe-maintainers:
