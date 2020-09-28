@@ -14,7 +14,7 @@ if errorlevel 1 exit /b 1
 pushd launcher\x64
 
 REM default python is from the activate conda environment which is not the build environment; specify python to cmake
-cmake -B. -S.. -DCMAKE_BUILD_TYPE:STRING=Release -DPython3_EXECUTABLE="%PYTHON%" -DQt5_DIR=C:\Qt\5.15\msvc2019_64\lib\cmake\Qt5
+cmake -G "NMake Makefiles" -B. -S.. -DCMAKE_BUILD_TYPE:STRING=Release -DPython3_EXECUTABLE="%PYTHON%" -DQt5_DIR=C:\Qt\5.15\msvc2019_64\lib\cmake\Qt5
 if errorlevel 1 exit /b 1
 
 dir /S

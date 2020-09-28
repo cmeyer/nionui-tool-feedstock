@@ -36,7 +36,7 @@ if [[ "$target_platform" == "osx-64" ]]; then
   # conda env list
   # "${PYTHON}" --version
   # default python is from the activate conda environment which is not the build environment; specify python to cmake
-  brew install qt5
+  /usr/local/bin/brew install qt5
   cmake CMakeLists.txt -DPython3_EXECUTABLE="$PYTHON" -DQt5_DIR=/usr/local/opt/qt/lib/cmake/Qt5
   cmake --build . --config Release
   # ls -R .
