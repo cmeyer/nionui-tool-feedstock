@@ -122,3 +122,14 @@ index 1b999fd..fb016cd 100644
      abi = "abi3"
      dest = f"bin/{launcher}"
      dir_path = "launcher/linux/x64"
+index bcc0b09..ba8b834 100644
+--- a/launcher/DocumentWindow.cpp
++++ b/launcher/DocumentWindow.cpp
+@@ -22,6 +22,7 @@
+ 
+ #include <QtGui/QFontDatabase>
+ #include <QtGui/QPainter>
++#include <QtGui/QPainterPath>
+ 
+ #include <QtSvg/QSvgWidget>
+ 
